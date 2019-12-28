@@ -1,0 +1,12 @@
+0011 0000 0000 0000          ; Set PC to x3000
+0010 000 011 111111          ; retrieve value stored at x3100 and place in R0 (original value)
+0101 001 001 1 00000         ; Clear R1 (this is where the reversed value will be stored)
+0001 010 001 1 00001         ; put/update mask in R2 (first is at 0001)
+0001 001 001 000 001         ; shift R1 to the left so that numbers at front of original are added to back of reverse
+0101 110 000 000 010         ; AND R0 and R2 (check if there is a one to be added to reverse)
+0000 010 000000001           ; Branch if AND (from x3005) is 0 (PC to x3007)
+0001 001 001 1 00001         ; add 1 if AND (from x3005) is not 0
+0001 010 010 000 010         ; perform left bit shift on mask (first would become 0010)
+0000 101 111111010           ; if mask != 0000 restart loop by resetting PC to x3003
+0011 001  011 1 10111        ; store reversed value from R1 into x3101
+1111 0000 00100101           ; HALT!

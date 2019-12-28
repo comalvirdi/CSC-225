@@ -1,0 +1,11 @@
+0011 0000 0000 0000         ; Set PC to x3000
+0010 000 011 111111         ; retrieve value stored at x3100 and place in R0 (original value)
+0101 001 001 1 00000        ; Clear R1 (this is where the counter of 1s will be stored)
+0001 010 001  1 00001       ; put/update mask in R2 which will show where the ones are(first mask is at 0001)
+0101 110  000 000 010       ; AND R1 and R2 (result indicates a 1 in the original (or not))
+0000 010 000000001          ; Branch if AND (from x3004) is 0 (PC to x3006)
+0001 001 001 1 00001        ; add 1 to counter (R1) if AND (from x3005) is not 0
+0001 010 010 000 010        ; perform left bit shift on mask so that next bit of original can be checked (first mask would become 0010)
+0000 101 111111011          ; if mask != 0000 restart loop by resetting PC to x3003
+0011 001  011 1 11000       ; store counter from R1 x3101
+1111 0000 00100101          ; HALT!
